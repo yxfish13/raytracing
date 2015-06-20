@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "Compobj::SearchKdTree(Ray&amp;, vector3 const&amp;, vector3 const&amp;, KdNode*, int, double&amp;):object.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "a_Ray">
+            </PersistentString>
+            <PersistentString
+               value = "(mx.cell[ax]-st.cell[ax])">
+            </PersistentString>
+            <PersistentString
+               value = "(mn.cell[ax]-st.cell[ax])">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Raytrace::RayT(void*):raytracing.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "board[x][y]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Scene::LightArea(vector3 const&amp;, Primitive*, vector3&amp;):scene.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Compobj::BuildKdTree(vector3 const&amp;, vector3 const&amp;, triangle**, int, int):object.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "tria[i]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "triangle::cross(int, double):object.h">
+         <PersistentStrings>
+            <PersistentString
+               value = "(tmp+1)/2-1">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Compobj::Intersect(Ray&amp;, double&amp;):object.cpp">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
