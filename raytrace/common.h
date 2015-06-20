@@ -35,12 +35,6 @@ public:
 	void Set( double a_X, double a_Y, double a_Z ) { x = a_X; y = a_Y; z = a_Z; }
     void Normalize() { double l = 1.0f / Length(); x *= l; y *= l; z *= l; }
     vector3 Normal() { vector3 A=*this;A.Normalize(); return A;}
-    double maxis(){
-        double mx=x+0.0001;
-        if (mx<y) mx=y;
-        if (mx<z) mx=z;
-        return mx;
-    }
     double Length() { return (double)sqrt( x * x + y * y + z * z ); }
 	double SqrLength() { return x * x + y * y + z * z; }
 	double Dot( vector3 a_V ) { return x * a_V.x + y * a_V.y + z * a_V.z; }

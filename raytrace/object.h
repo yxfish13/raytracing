@@ -34,7 +34,7 @@ public:
     void SetRefrIndex( double a_Refr ) { m_RIndex = a_Refr; }
     void SetDiffuseRefl( double a_DRefl ) { m_DRefl = a_DRefl; }
     double GetSpecular() { return m_Spec; }
-    double GetDiffuse() { return m_Diff-0.1; }
+    double GetDiffuse() { return m_Diff; }
     double GetReflection() { return m_Refl; }
     double GetRefraction() { return m_Refr; }
     double GetRefrIndex() { return m_RIndex; }

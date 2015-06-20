@@ -41,7 +41,7 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt){
         if (event.obj->IsLight())
             return event.obj->GetColor();
         //Phong
-        double multi=0;
+        
         pix=pix+ event.obj->GetColor(event.P.x,event.P.y,event.P.z)*0.1*event.obj->GetMaterial()->GetDiffuse();
      //   if(depth>=1)
         if(event.obj->GetMaterial()->GetDiffuse())
@@ -76,15 +76,7 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt){
         
         //
         int Samples=1;
-        if (ttt==0) Samples=1;
-        else{
-            if(event.obj->GetMaterial()->GetDiffuse()){
-                multi=1.7/event.obj->GetColor(event.P.x,event.P.y,event.P.z).Length();
-                if (multi<0.99){
-                    multi=1;
-                }
-            }
-        }
+        if (ttt==0) Samples=60;
         if (Samples){
             int ts=Samples;
             if(event.obj->GetMaterial()->GetDiffuse())
@@ -109,16 +101,8 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt){
             if (ts==0) ts=1;
             pix_R=pix_R*event.obj->GetColor(event.P.x,event.P.y,event.P.z)*(1.0/ts);
             pix+=pix_R*1;
-            if(event.obj->GetMaterial()->GetDiffuse()&&ttt){
-                pix*=multi;
-                if (multi<0.99) std::cout<<"fuck"<<std::endl;
-                if (multi<0.99) std::cout<<"fuck"<<std::endl;
-                
-            }
         }
-        
-        
-        
+        //pix*=0.5;
         //reflection
         pix_R=Color(0,0,0);
         vector3 R = _ray.GetDirection()- event.N * 2.0 * DOT( _ray.GetDirection(), event.N );
@@ -127,6 +111,7 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt){
         if (event.retval==1&&event.obj->GetMaterial()->GetReflection())
             pix_R=Raytracing(ReflectRay, depth+1,ind,t_dist,ttt)*event.obj->GetColor(event.P.x,event.P.y,event.P.z)*event.obj->GetMaterial()->GetReflection();
         pix+=pix_R;
+        
         //refraction
         if (event.obj->GetMaterial()->GetRefraction()>EPSILON){
             vector3 T;double cosT,cosi;
@@ -154,7 +139,7 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt){
 }
 
 void* Raytrace::RayT(void*arg){
-    int f=400,R=0,multi=1;
+    int f=400,R=30,multi=80;
     int y=(*((int*)arg));
     for(int x=0;x<width;x++){
         vector3 a(x,y,-200);
@@ -195,7 +180,7 @@ void Raytrace:: draw(int y,IplImage* image,const char *windowTitle){
 }
 void Raytrace:: render(IplImage* image,const char *windowTitle){
     int temp=0;
-    int multi=1;
+    int multi=6;
     pthread_t tidp[multi];
     int *b[multi];
     for (int i=0;i<multi;i++)b[i]=new int;

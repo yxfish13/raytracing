@@ -88,7 +88,6 @@ double Scene::LightArea(const vector3&S,Primitive *obj,vector3 &LL){
                 }else
                     ts[i*SamplesLight][j*SamplesLight]=0;
             }
-            if(times) return times/cnt;
         }
     if(obj->GetType()==1)
         return times/cnt;
@@ -145,12 +144,12 @@ void Scene::InitScene()
     m_Primitive[0]->GetMaterial()->SetReflection( 0 );
     m_Primitive[0]->GetMaterial()->SetRefraction( 0.0f );
     m_Primitive[0]->GetMaterial()->SetDiffuse( 1 );
-    m_Primitive[0]->GetMaterial()->SetColor( Color( 0, 1, 1 ) );
+    m_Primitive[0]->GetMaterial()->SetColor( Color( 0.5, 0.5f, 0.8f ) );
     m_Primitive[0]->SetText("T_e.jpg");
     
     // area light
     //m_Primitive[1] = new Square(  vector3( 400, 699, 500 ), vector3( 50, 0.1f, 25 )  );
-    m_Primitive[1] =new Sphere(vector3(400,1699,600),400);
+    m_Primitive[1] =new Sphere(vector3(400,1699,600),500);
     m_Primitive[1]->Light( true );
     m_Primitive[1]->GetMaterial()->SetColor( Color( 1.5, 1.5, 1.5 ) );
     Material mat;
@@ -161,9 +160,10 @@ void Scene::InitScene()
     
     m_Primitives =2;
     
+    m_Primitive[m_Primitives++] = new Compobj("dragon.obj",200,vector3(1000,200,400),mat);
     
     
-    m_Primitive[m_Primitives] =new Sphere(vector3(320,150,780),150);
+    m_Primitive[m_Primitives] =new Sphere(vector3(200,150,750),150);
     m_Primitive[m_Primitives]->GetMaterial()->SetReflection(1);
     m_Primitive[m_Primitives]->GetMaterial()->SetDiffuse(0);
     m_Primitive[m_Primitives]->GetMaterial()->SetRefraction(0);
@@ -172,7 +172,7 @@ void Scene::InitScene()
     m_Primitive[m_Primitives]->GetMaterial()->Setabsorb(Color(0.1,0.1,0.01));
     m_Primitives++;
     
-    m_Primitive[m_Primitives] =new PlanePrim(vector3(0,-1,0),4000);
+    m_Primitive[m_Primitives] =new PlanePrim(vector3(0,-1,0),2000);
     m_Primitive[m_Primitives]->GetMaterial()->SetReflection(0.0);
     m_Primitive[m_Primitives]->GetMaterial()->SetDiffuse(1);
     m_Primitive[m_Primitives]->GetMaterial()->SetRefraction(00);
@@ -199,7 +199,7 @@ void Scene::InitScene()
     m_Primitive[m_Primitives]->SetText("T_f.jpg");
     m_Primitives++;
     
-    m_Primitive[m_Primitives] =new Sphere(vector3(700,100,50),100);
+    m_Primitive[m_Primitives] =new Sphere(vector3(500,100,100),100);
     m_Primitive[m_Primitives]->GetMaterial()->SetReflection(0);
     m_Primitive[m_Primitives]->GetMaterial()->SetDiffuse(0.0);
     m_Primitive[m_Primitives]->GetMaterial()->SetRefraction(1);
@@ -208,7 +208,7 @@ void Scene::InitScene()
     m_Primitive[m_Primitives]->GetMaterial()->Setabsorb(Color(0.1,0.1,0.01));
     m_Primitives++;
     
-    m_Primitive[m_Primitives] =new Sphere(vector3(60,100,130),100);
+    m_Primitive[m_Primitives] =new Sphere(vector3(30,100,50),100);
     m_Primitive[m_Primitives]->GetMaterial()->SetReflection(0);
     m_Primitive[m_Primitives]->GetMaterial()->SetDiffuse(1);
     m_Primitive[m_Primitives]->GetMaterial()->SetRefraction(0);
@@ -217,8 +217,6 @@ void Scene::InitScene()
     m_Primitive[m_Primitives]->GetMaterial()->Setabsorb(Color(0.1,0.1,0.01));
     m_Primitives++;
     
-    
-    m_Primitive[m_Primitives++] = new Compobj("dragon.obj",300,vector3(650,200,500),mat);
    // m_Primitive[m_Primitives++] = new Compobj("rabbit.obj",1000,vector3(300,-20,-100),mat);
     
     
