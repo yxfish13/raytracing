@@ -38,6 +38,12 @@ public:
     double Length() { return (double)sqrt( x * x + y * y + z * z ); }
 	double SqrLength() { return x * x + y * y + z * z; }
 	double Dot( vector3 a_V ) { return x * a_V.x + y * a_V.y + z * a_V.z; }
+    double Maxis(){
+        double ans=x+0.00001;
+        if (y>ans) ans=y;
+        if (z>ans) ans=z;
+        return ans;
+    }
 	vector3 Cross( vector3 b ) { return vector3( y * b.z - z * b.y, z * b.x - x * b.z, x * b.y - y * b.x ); }
 	void operator += ( const vector3& a_V ) { x += a_V.x; y += a_V.y; z += a_V.z; }
 	void operator -= ( vector3& a_V ) { x -= a_V.x; y -= a_V.y; z -= a_V.z; }

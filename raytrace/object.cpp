@@ -152,8 +152,8 @@ Color PlanePrim:: GetColor(double x,double y ,double z)
             x=x+3330,y=z+3330;
     x+=1E5+300;y+=1E5+300;
     if (x<00000||!istexture||y<0)return m_Material.GetColor();
-    y=int(y)%(image->height-50)+30;
-    x=int(x)%(image->width-50)+30;
+    y=int(y)%(image->height-80)+40;
+    x=int(x)%(image->width-80)+40;
     CvScalar pixel = cvGet2D(image, y, x);
     return vector3(1.0*pixel.val[0]/255,1.0*pixel.val[1]/255,1.0*pixel.val[2]/255);
     //return vector3(1.0/224*(((int)(x*y))%230),1.0/224*(((int)(x*y))%230),1.0/224*(((int)(x*y))%230));

@@ -28,7 +28,7 @@ Raytrace::Raytrace(Scene &_scene,int w,int h){
     for (int i=0; i < width*2+2 ; i++ )
         board[i] = new Color[height*2+2];
 }
-Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt){
+Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt,bool refra){
     if (depth>MaxDepth) return Color(0,0,0);
     Color pix(0,0,0);
     intersect_event event=m_scene.find_intersect(_ray);
@@ -42,7 +42,6 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt){
             return event.obj->GetColor();
         //Phong
         
-        pix=pix+ event.obj->GetColor(event.P.x,event.P.y,event.P.z)*0.1*event.obj->GetMaterial()->GetDiffuse();
      //   if(depth>=1)
         if(event.obj->GetMaterial()->GetDiffuse())
         for (int i=0;i<m_scene.GetNLight();i++){
@@ -62,6 +61,7 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt){
                 vector3 Len=event.P-AA->GetCentre();
                 double cos2a=((AA)->GetSqRadius()/Len.SqrLength());
                 cos2a=sqrt(1-cos2a);
+                //cos2a=0.5;
                 if (dot1>0)
                     pix+=event.obj->GetColor(event.P.x,event.P.y,event.P.z)*A->GetColor()*
                     dot1*area*2*(1.0-cos2a);
@@ -76,7 +76,7 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt){
         
         //
         int Samples=1;
-        if (ttt==0) Samples=60;
+        if (ttt==0) Samples=40;
         if (Samples){
             int ts=Samples;
             if(event.obj->GetMaterial()->GetDiffuse())
@@ -93,8 +93,8 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt){
                     Ray Diffuse_ray(event.P+LL*EPSILON*10,LL);
                     double t_dist;
                     Color pix_t;
-                    pix_t=Raytracing(Diffuse_ray, depth+1
-                              ,ind,t_dist,1)*event.obj->GetMaterial()->GetDiffuse()*DOT(LL,event.N);
+                    pix_t=Raytracing(Diffuse_ray, depth+2
+                              ,ind,t_dist,1,refra)*event.obj->GetMaterial()->GetDiffuse()*DOT(LL,event.N);
                     //if (pix_t.Length()>0.99) {pix_t=Color(0,0,0);ts--;}
                     pix_R+=pix_t;
                 }
@@ -102,6 +102,8 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt){
             pix_R=pix_R*event.obj->GetColor(event.P.x,event.P.y,event.P.z)*(1.0/ts);
             pix+=pix_R*1;
         }
+        pix=pix+ event.obj->GetColor(event.P.x,event.P.y,event.P.z)*0.14*event.obj->GetMaterial()->GetDiffuse();
+        if (ttt)pix=pix*(1.0/event.obj->GetColor(event.P.x,event.P.y,event.P.z).Maxis());
         //pix*=0.5;
         //reflection
         pix_R=Color(0,0,0);
@@ -109,9 +111,9 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt){
         Ray ReflectRay(event.P + R*EPSILON*10,R);
         //Color pix_R;
         if (event.retval==1&&event.obj->GetMaterial()->GetReflection())
-            pix_R=Raytracing(ReflectRay, depth+1,ind,t_dist,ttt)*event.obj->GetColor(event.P.x,event.P.y,event.P.z)*event.obj->GetMaterial()->GetReflection();
+            pix_R=Raytracing(ReflectRay, depth+1,ind,t_dist,ttt,refra)*event.obj->GetColor(event.P.x,event.P.y,event.P.z)*event.obj->GetMaterial()->GetReflection();
         pix+=pix_R;
-        
+        if (refra)  event.retval=-1;
         //refraction
         if (event.obj->GetMaterial()->GetRefraction()>EPSILON){
             vector3 T;double cosT,cosi;
@@ -124,7 +126,7 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt){
                 T = _ind*_ray.GetDirection();
                 T =T -(_ind*_ray.GetDirection().Dot(event.N)+cosT)*event.N;
                 Ray RfRay(event.P+T*EPSILON*10,T);
-                Color Rix_RF=Raytracing(RfRay, depth+1, event.obj->GetMaterial()->GetRefrIndex(), t_dist,ttt);
+                Color Rix_RF=Raytracing(RfRay, depth+1, event.obj->GetMaterial()->GetRefrIndex(), t_dist,ttt,not refra);
                 vector3 trans=event.obj->GetAbsorb();
                 trans.x=exp(t_dist*-0.05*trans.x);
                 trans.y=exp(t_dist*-0.05*trans.y);
@@ -139,7 +141,7 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt){
 }
 
 void* Raytrace::RayT(void*arg){
-    int f=400,R=30,multi=80;
+    int f=100,R=10,multi=60;
     int y=(*((int*)arg));
     for(int x=0;x<width;x++){
         vector3 a(x,y,-200);
@@ -158,7 +160,7 @@ void* Raytrace::RayT(void*arg){
             a.Normalize();
             _ray.set_origin(o_v);
             _ray.set_direction(a);
-            board[x][y]+=Raytracing(_ray,0,1,dist,0)*(1.0/multi);
+            board[x][y]+=Raytracing(_ray,0,1,dist,0,0)*(1.0/multi);
         }
         if (board[x][y].x>1) board[x][y].x=1;
         if (board[x][y].y>1) board[x][y].y=1;

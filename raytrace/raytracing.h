@@ -15,12 +15,12 @@
 /*#include <iostream>
 #include <cmath>*/
 #include "object.h"
-const int MaxDepth = 8;
+const int MaxDepth = 7;
 class Raytrace{
 public:
     Raytrace(){}
     Raytrace(Scene &_scene,int w,int h);
-    static Color Raytracing(Ray &A,int depth,double ind,double &dist,int ttt=1);
+    static Color Raytracing(Ray &A,int depth,double ind,double &dist,int ttt,bool refra);
     Color** GetPhoto(){return board;}
     void SetView(const vector3 &o){o_view=o;}
     void render( IplImage* image,const char * windowTitle);
