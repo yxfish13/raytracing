@@ -17,12 +17,6 @@ const char* windowTitle = "rantracing";
 const char* fileName = "picture.bmp";
 const double pi = acos(-1);
 IplImage* image = cvCreateImage(cvSize(IMAGE_WIDTH, IMAGE_HEIGHT), IPL_DEPTH_8U, 3);
-//CvScalar pixel = cvGet2D(image, x1, y1);
-//pixel.val[0]=ans*255/16*x/IMAGE_WIDTH;
-//pixel.val[1]=ans*255/16*x/IMAGE_HEIGHT;
-//pixel.val[2]=ans*255/16;
-//cvSet2D(image,y2,x2,pixel);
-//cvShowImage(windowTitle, image);
 int main() {
     cvSet(image, CV_RGB(0, 0, 0));
     cvNamedWindow(windowTitle, CV_WINDOW_AUTOSIZE);
