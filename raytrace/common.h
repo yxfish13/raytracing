@@ -23,7 +23,7 @@ inline double Rand( double a_Range ) { return ((double)rand() / RAND_MAX) * a_Ra
 #define SQRLENGTH(A)	(A.x*A.x+A.y*A.y+A.z*A.z)
 #define SQRDISTANCE(A,B) ((A.x-B.x)*(A.x-B.x)+(A.y-B.y)*(A.y-B.y)+(A.z-B.z)*(A.z-B.z))
 
-#define EPSILON			0.001
+#define EPSILON			0.0001
 #define TRACEDEPTH		6
 
 #define PI				3.141592653589793238462f

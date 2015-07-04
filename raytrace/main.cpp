@@ -23,7 +23,7 @@ int main() {
     cvShowImage(windowTitle, image);
     Scene _scene;_scene.InitScene();
     Raytrace m_raytrace(_scene, IMAGE_WIDTH , IMAGE_HEIGHT);
-    m_raytrace.SetView(vector3(320,240,-700));
+    m_raytrace.SetView(vector3(IMAGE_WIDTH/2,IMAGE_HEIGHT/2,-700));
     int t=clock();
     m_raytrace.render(image,windowTitle);
     cout<<(clock()-t)/CLOCKS_PER_SEC<<endl;

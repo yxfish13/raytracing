@@ -36,6 +36,17 @@
          contextName = "Scene::LightArea(vector3 const&amp;, Primitive*, vector3&amp;):scene.cpp">
       </ContextState>
       <ContextState
+         contextName = "Raytrace::Raytracing(Ray&amp;, int, double, double&amp;, int, bool):raytracing.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "depth">
+            </PersistentString>
+            <PersistentString
+               value = "cosT">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "Compobj::Compobj(char*, double, vector3, Material&amp;):object.cpp">
          <PersistentStrings>
             <PersistentString
@@ -51,10 +62,10 @@
                value = "F[i*3+1]">
             </PersistentString>
             <PersistentString
-               value = "F">
+               value = "mn">
             </PersistentString>
             <PersistentString
-               value = "mn">
+               value = "F">
             </PersistentString>
             <PersistentString
                value = "F[i*3+0]">
@@ -74,6 +85,9 @@
       </ContextState>
       <ContextState
          contextName = "Compobj::Intersect(Ray&amp;, double&amp;):object.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Raytrace::GetPhong(intersect_event&amp;, Ray&amp;, int, double, double&amp;, int, bool):raytracing.cpp">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

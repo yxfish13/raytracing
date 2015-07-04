@@ -15,7 +15,17 @@
 /*#include <iostream>
 #include <cmath>*/
 #include "object.h"
-const int MaxDepth = 7;
+
+const int    MaxDepth    = 9;//追踪层数
+const bool   supersample = false;
+const int    samplelen   = 5;
+const double samplediff  = 0.2;
+const double f_light     = 15;//光圈
+const double f_dis       = 50;//焦距
+const int    f_times     = 40;//光圈的采样次数
+const int    maxthread   = 6;//多线程树
+const int    mt_times    = 25;//mt的采样次数
+const int    step        = 3;
 class Raytrace{
 public:
     Raytrace(){}
@@ -26,6 +36,8 @@ public:
     void render( IplImage* image,const char * windowTitle);
     static void *RayT(void*arg);
     void draw(int y,IplImage* image,const char *windowTitle);
+    static Color GetPhong(intersect_event &event,Ray &_ray,int depth,double ind,double &dist,int ttt,bool refra);
+    static Color GetMT(intersect_event &event,Ray &_ray,int depth,double ind,double &dist,int ttt,bool refra);
 private:
     static Scene m_scene;
     static int width,height;

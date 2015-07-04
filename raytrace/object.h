@@ -18,7 +18,7 @@
 // -----------------------------------------------------------
 // Material class definition
 // -----------------------------------------------------------
-
+const double s_light=0.1;
 class Material
 {
 public:
@@ -32,19 +32,16 @@ public:
     void SetReflection( double a_Refl ) { m_Refl = a_Refl; }
     void SetRefraction( double a_Refr ) { m_Refr = a_Refr; }
     void SetRefrIndex( double a_Refr ) { m_RIndex = a_Refr; }
-    void SetDiffuseRefl( double a_DRefl ) { m_DRefl = a_DRefl; }
     double GetSpecular() { return m_Spec; }
-    double GetDiffuse() { if (m_Diff>0.00)return m_Diff;else return m_Diff; }
+    double GetDiffuse() { if (m_Diff>s_light)return m_Diff-s_light;else return 0; }
     double GetReflection() { return m_Refl; }
     double GetRefraction() { return m_Refr; }
     double GetRefrIndex() { return m_RIndex; }
-    double GetDiffuseRefl() { return m_DRefl; }
 private:
     Color m_Color;
     Color absorb;
     double m_Refl, m_Refr;
     double m_Diff, m_Spec;
-    double m_DRefl;
     double m_RIndex;
 };
 

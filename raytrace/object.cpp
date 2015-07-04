@@ -29,7 +29,7 @@ void Primitive::SetName( char* a_Name )
 
 Material::Material() :
 m_Color( Color( 0.2f, 0.2f, 0.2f ) ),
-m_Refl( 0 ), m_Diff( 0.2f ),m_RIndex(1),m_Spec(0.3),m_Refr(0),m_DRefl(0.5)
+m_Refl( 0 ), m_Diff( 0.2f ),m_RIndex(1),m_Spec(0.3),m_Refr(0)
 {
 }
 
