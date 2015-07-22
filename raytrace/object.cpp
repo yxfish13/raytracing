@@ -159,16 +159,16 @@ Color PlanePrim:: GetColor(double x,double y ,double z)
     //return vector3(1.0/224*(((int)(x*y))%230),1.0/224*(((int)(x*y))%230),1.0/224*(((int)(x*y))%230));
     if ((int(x/30)+int(y/30))%2) return vector3(1,1,1);else return vector3(0,0,0);
 }
-Color triangle:: GetColor(double x,double y  ,double z) {
-    
-    if (x<-3000||!istexture||y<0)return m_Material.GetColor();
-    int tx=vector3(x,y,z).Dot(e1),ty=vector3(x,y,z).Dot(e2);
-    y=(ty%image->height+3000)%image->height;
-    x=(tx%image->width+3000)%image->width;
-    CvScalar pixel = cvGet2D(image, y, x);
-    return vector3(1.0*pixel.val[0]/255,1.0*pixel.val[1]/255,1.0*pixel.val[2]/255);
-    if ((int(x/30)+int(y/30))%2) return vector3(1,1,1);else return vector3(0,0,0);
-}
+//Color triangle:: GetColor(double x,double y  ,double z) {
+//    
+//    if (x<-3000||!istexture||y<0)return m_Material.GetColor();
+//    int tx=vector3(x,y,z).Dot(e1),ty=vector3(x,y,z).Dot(e2);
+//    y=(ty%image->height+3000)%image->height;
+//    x=(tx%image->width+3000)%image->width;
+//    CvScalar pixel = cvGet2D(image, y, x);
+//    return vector3(1.0*pixel.val[0]/255,1.0*pixel.val[1]/255,1.0*pixel.val[2]/255);
+//    if ((int(x/30)+int(y/30))%2) return vector3(1,1,1);else return vector3(0,0,0);
+//}
 
 intersect_event triangle::Intersect(Ray& a_ray, double &a_dist){
     intersect_event inter;
@@ -259,7 +259,11 @@ Compobj::Compobj(char *fileName,double scale,vector3 trans,Material &mat)
     mn=vector3(1E6,1E6,1E6);
     mx=vector3(-1E6,-1E6,-1E6);
     for (int i=1;i<=np;i++){
-        fscanf(fin,"v %lf%lf%lf\n",&P[i].x,&P[i].y,&P[i].z);
+        double xx,zz;
+        double theta=0;
+        fscanf(fin,"v %lf%lf%lf\n",&xx,&P[i].y,&zz);
+        P[i].x=xx;//=cos(theta)*xx-sin(theta)*zz;
+        P[i].z=zz;//=cos(theta)*zz+sin(theta)*xx;
         P[i]*=scale;
         P[i]+=trans;
         if (mn.cell[0]>P[i].cell[0]) mn.cell[0]=P[i].cell[0];
@@ -270,14 +274,53 @@ Compobj::Compobj(char *fileName,double scale,vector3 trans,Material &mat)
         if (mx.cell[2]<P[i].cell[2]) mx.cell[2]=P[i].cell[2];
     }
     trig = new triangle*[nf+2];
+   // IplImage *image = cvLoadImage("T_f.jpg");
     for (int i=0;i<nf;i++){
         fscanf(fin,"f %d%d%d\n",&F[i*3+0],&F[i*3+1],&F[i*3+2]);
         trig[i]=new triangle(P[F[i*3+0]],P[F[i*3+1]],P[F[i*3+2]]);
         trig[i]->SetMaterial(mat);
+      //  trig[i]->SetText(image);
     }
     #ifndef Debug
     root=BuildKdTree(mn,mx,trig,nf,0);
     #endif
+}
+Compobj::Compobj(char *fileName,double scale,vector3 trans,Material &mat,char *Text)
+{
+    std::cout<<1<<std::endl;
+    FILE * fin =fopen(fileName,"r");
+    std::cout<<2<<std::endl;
+    fscanf(fin,"# %d%d\n",&np,&nf);
+    P = new vector3[np+1];
+    F = new int[3*nf+3];
+    mn=vector3(1E6,1E6,1E6);
+    mx=vector3(-1E6,-1E6,-1E6);
+    for (int i=1;i<=np;i++){
+        double xx,zz;
+        double theta=0;
+        fscanf(fin,"v %lf%lf%lf\n",&xx,&P[i].y,&zz);
+        P[i].x=xx;//=cos(theta)*xx-sin(theta)*zz;
+        P[i].z=zz;//=cos(theta)*zz+sin(theta)*xx;
+        P[i]*=scale;
+        P[i]+=trans;
+        if (mn.cell[0]>P[i].cell[0]) mn.cell[0]=P[i].cell[0];
+        if (mn.cell[1]>P[i].cell[1]) mn.cell[1]=P[i].cell[1];
+        if (mn.cell[2]>P[i].cell[2]) mn.cell[2]=P[i].cell[2];
+        if (mx.cell[0]<P[i].cell[0]) mx.cell[0]=P[i].cell[0];
+        if (mx.cell[1]<P[i].cell[1]) mx.cell[1]=P[i].cell[1];
+        if (mx.cell[2]<P[i].cell[2]) mx.cell[2]=P[i].cell[2];
+    }
+    trig = new triangle*[nf+2];
+    IplImage *image = cvLoadImage(Text);
+    for (int i=0;i<nf;i++){
+        fscanf(fin,"f %d%d%d\n",&F[i*3+0],&F[i*3+1],&F[i*3+2]);
+        trig[i]=new triangle(P[F[i*3+0]],P[F[i*3+1]],P[F[i*3+2]]);
+        trig[i]->SetMaterial(mat);
+        trig[i]->SetText(image);
+    }
+#ifndef Debug
+    root=BuildKdTree(mn,mx,trig,nf,0);
+#endif
 }
 #ifdef Debug
 intersect_event Compobj::Intersect( Ray& a_Ray, double& a_Dist ){

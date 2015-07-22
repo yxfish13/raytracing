@@ -73,9 +73,28 @@ public:
     virtual int GetType() = 0;
     virtual intersect_event Intersect( Ray& a_Ray, double& a_Dist ) = 0;
     virtual vector3 GetNormal( vector3& a_Pos ) = 0;
-    virtual Color GetColor(double x=-1E6,double y=-1E6 ,double z= -1E6) { return m_Material.GetColor(); }
+    virtual Color GetColor(double x=-1E6,double y=-1E6 ,double z= -1E6) {
+        if(!istexture)return m_Material.GetColor();
+       // if (m_Plane.N.z!=0)
+        //{ x+=3303;y+=3330;}
+        //else
+          //  if (m_Plane.N.x!=0){
+            //    x=z+3330,y+=3330;
+            //}
+            //else
+              //  x=x+3330,y=z+3330;
+        x+=1E5+300;y+=1E5+300;
+        if (x<00000||!istexture||y<0)return m_Material.GetColor();
+        y=int(y)%(image->height-80)+40;
+        x=int(x)%(image->width-80)+40;
+        CvScalar pixel = cvGet2D(image, y, x);
+        return vector3(1.0*pixel.val[0]/255,1.0*pixel.val[1]/255,1.0*pixel.val[2]/255);
+        //return vector3(1.0/224*(((int)(x*y))%230),1.0/224*(((int)(x*y))%230),1.0/224*(((int)(x*y))%230));
+        if ((int(x/30)+int(y/30))%2) return vector3(1,1,1);else return vector3(0,0,0);
+    }
     virtual Color GetAbsorb() { return m_Material.GetAbsorb(); }
     void SetText(char *Name){image = cvLoadImage(Name);istexture=true; }
+    void SetText(IplImage* imag){image=imag;istexture=true;}
     //void SetMaterial(Material m_material){m_Material=m_material;}
     virtual void Light( bool a_Light ) { m_Light = a_Light; }
     bool IsLight() { return m_Light; }
@@ -140,7 +159,7 @@ public:
     }
     vector3& GetNormal() { return N; }
     intersect_event Intersect( Ray& a_Ray, double& a_Dist );
-    Color GetColor(double x=-1E6,double y=-1E6  ,double z=-1E6) ;
+    //Color GetColor(double x=-1E6,double y=-1E6  ,double z=-1E6) ;
     vector3 GetNormal( vector3& a_Pos ){return N;}
     int cross(int axis,double x){
         int tmp=(Pa.cell[axis]>x)+(Pb.cell[axis]>x)+(Pc.cell[axis]>x);
@@ -179,6 +198,7 @@ class Compobj : public Primitive
 public:
     int GetType() { return 4; }
     Compobj(char *filename,double scale,vector3 trans,Material &mat);
+    Compobj(char *filename,double scale,vector3 trans,Material &mat,char *Text);
     intersect_event Intersect( Ray& a_Ray, double& a_Dist );
     vector3 GetNormal( vector3& a_Pos ){ std::cout<<"normal"; return P[0];}
     Color GetColor(double x=-1E6,double y=-1E6  ,double z=-1E6) {return last;}

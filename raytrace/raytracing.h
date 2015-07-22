@@ -16,15 +16,15 @@
 #include <cmath>*/
 #include "object.h"
 
-const int    MaxDepth    = 9;//追踪层数
+const int    MaxDepth    = 6;//追踪层数
 const bool   supersample = false;
-const int    samplelen   = 5;
+const int    samplelen   = 3;
 const double samplediff  = 0.2;
-const double f_light     = 15;//光圈
-const double f_dis       = 50;//焦距
-const int    f_times     = 40;//光圈的采样次数
+const double f_light     = 0;//光圈
+const double f_dis       = 250;//焦距
+const int    f_times     = 1;//光圈的采样次数
 const int    maxthread   = 6;//多线程树
-const int    mt_times    = 25;//mt的采样次数
+const int    mt_times    = 10;//mt的采样次数
 const int    step        = 3;
 class Raytrace{
 public:

@@ -9,7 +9,7 @@
 #include "raytracing.h"
 #include "pthread.h"
 #include <cmath>
-
+#include <unistd.h>
 Scene Raytrace:: m_scene;
 int Raytrace:: width=0,Raytrace:: height=0;
 Color** Raytrace:: board=NULL;
@@ -63,14 +63,14 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt,b
         //Phong
         double tempt;
         //
-      //  pix=GetPhong(event,_ray,depth,ind,tempt,ttt,refra);
-        
+     //  Color pix_ttt=GetPhong(event,_ray,depth,ind,tempt,ttt,refra);
                 Color pix_R=Color(0,0,0);
         
                 int Samples=1;
                 if (ttt==0) Samples=mt_times;
         
         
+         
         
         if(event.obj->GetMaterial()->GetDiffuse()>0.01)
             for (int i=0;i<m_scene.GetNLight();i++){
@@ -130,7 +130,7 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt,b
         //if (pixtemp.Length()>pix.Length()) pix=pixtemp;
         pix=pix+ event.obj->GetColor(event.P.x,event.P.y,event.P.z)*s_light*event.obj->GetMaterial()->GetDiffuse();
         //if (ttt)pix=pix*(1.0/event.obj->GetColor(event.P.x,event.P.y,event.P.z).Maxis());
-        
+        //if (pix_ttt.Length()>pix.Length()) pix=pix_ttt;
         
         
         
@@ -253,6 +253,10 @@ void Raytrace:: render(IplImage* image,const char *windowTitle){
             pthread_create(&tidp[now%multi],NULL,RayT,(void*)b[now%multi]);
         }
         draw(now,image,windowTitle);
+       if (now%5==0) cvShowImage(windowTitle, image);
+       // cvSaveImage(fileName, image);
+        cvWaitKey(1);
+       // sleep(0.5);
         now=now+1;
         std::cout<<now<<std::endl;
     }
