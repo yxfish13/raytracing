@@ -18,7 +18,7 @@
 // -----------------------------------------------------------
 // Material class definition
 // -----------------------------------------------------------
-const double s_light=0.1;
+const double s_light=0.02;
 class Material
 {
 public:

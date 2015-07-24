@@ -25,7 +25,7 @@ intersect_event Scene::find_intersect(Ray &A){
     intersect_event event;
     double dist;dist = 300000;
     for (int i = 0 ; i < GetNrPrimitives() ;i++)
-    if((A.GetOrigin().z!=-700||!GetPrimitive(i)->IsLight())){
+    if((A.GetOrigin().z!=-400||!GetPrimitive(i)->IsLight())){
         intersect_event event1 = GetPrimitive(i)->Intersect(A, dist);
         if (event1.retval)
             event=event1;
@@ -141,7 +141,7 @@ void Scene::InitScene()
 {
     m_Primitive = new Primitive*[500];
     // ground plane
-    m_Primitive[0] = new PlanePrim( vector3( 0, 1, 0 ), 000 );
+    m_Primitive[0] = new PlanePrim( vector3( 0, 1, 0 ), 200 );
     m_Primitive[0]->GetMaterial()->SetReflection( 0 );
     m_Primitive[0]->GetMaterial()->SetRefraction( 0.0f );
     m_Primitive[0]->GetMaterial()->SetDiffuse( 1 );
@@ -149,97 +149,44 @@ void Scene::InitScene()
     m_Primitive[0]->SetText("T_e.jpg");
     
     //m_Primitive[1] = new Square(  vector3( 400, 699, 500 ), vector3( 50, 0.1f, 25 )  );
-    m_Primitive[1] =new Sphere(vector3(400,1699,600),450);
+    m_Primitive[1] =new Sphere(vector3(600,799,1700),150);
     m_Primitive[1]->Light( true );
-    m_Primitive[1]->GetMaterial()->SetColor( Color( 0.8, 0.8, 0.8 ) );
-    
+    m_Primitive[1]->GetMaterial()->SetColor( Color( 7, 7, 7 ) );
     m_Primitives =2;
     
+    m_Primitive[2] = new PlanePrim( vector3( 0, 1, 0 ), -900 );
+    m_Primitive[2]->GetMaterial()->SetReflection( 0 );
+    m_Primitive[2]->GetMaterial()->SetRefraction( 0.0f );
+    m_Primitive[2]->GetMaterial()->SetDiffuse( 1 );
+    m_Primitive[2]->GetMaterial()->SetColor( Color( 1, 1, 1 ) );
+    //m_Primitive[2]->SetText("T_e.jpg");
     
+    m_Primitives =3;
     
-    /* m_Primitive[m_Primitives] =new Sphere(vector3(300,150,800),150);
-     m_Primitive[m_Primitives]->GetMaterial()->SetReflection(1);
-     m_Primitive[m_Primitives]->GetMaterial()->SetDiffuse(0);
-     m_Primitive[m_Primitives]->GetMaterial()->SetRefraction(0);
-     m_Primitive[m_Primitives]->GetMaterial()->SetRefrIndex(1.7);
-     m_Primitive[m_Primitives]->GetMaterial()->SetColor(Color(1,1,1));
-     m_Primitive[m_Primitives]->GetMaterial()->Setabsorb(Color(0.1,0.1,0.01));
-     m_Primitives++;*/
-    
-    m_Primitive[m_Primitives] =new PlanePrim(vector3(0,-1,0.1),2500);
-    m_Primitive[m_Primitives]->GetMaterial()->SetReflection(0.0);
-    m_Primitive[m_Primitives]->GetMaterial()->SetDiffuse(1);
-    m_Primitive[m_Primitives]->GetMaterial()->SetRefraction(00);
-    m_Primitive[m_Primitives]->GetMaterial()->SetColor(Color(1,1,1));
-    m_Primitive[m_Primitives]->GetMaterial()->Setabsorb(Color(0.1,0.1,0.01));
-    //  m_Primitive[m_Primitives]->SetText("T_b.jpg");
-    m_Primitives++;
-    m_Primitive[m_Primitives] =new PlanePrim(vector3(0,0,-1),4000);
-    m_Primitive[m_Primitives]->GetMaterial()->SetReflection(0.0);
-    m_Primitive[m_Primitives]->GetMaterial()->SetDiffuse(1);
-    m_Primitive[m_Primitives]->GetMaterial()->SetRefraction(00);
-    m_Primitive[m_Primitives]->GetMaterial()->SetColor(Color(1,1,1));
-    m_Primitive[m_Primitives]->GetMaterial()->Setabsorb(Color(0.1,0.1,0.01));
-    m_Primitive[m_Primitives]->SetText("T_c.jpg");
-    m_Primitives++;
-    
-    m_Primitive[m_Primitives] =new PlanePrim(vector3(1,0,0.2),300);
-    m_Primitive[m_Primitives]->GetMaterial()->SetReflection(0);
-    m_Primitive[m_Primitives]->GetMaterial()->SetDiffuse(1);
-    m_Primitive[m_Primitives]->GetMaterial()->SetRefraction(0);
-    m_Primitive[m_Primitives]->GetMaterial()->SetColor(Color(1,1,1));
-    m_Primitive[m_Primitives]->GetMaterial()->Setabsorb(Color(0.1,0.1,0.01));
-    m_Primitive[m_Primitives]->SetText("T_f.jpg");
-    m_Primitives++;
-    
-    m_Primitive[m_Primitives] =new PlanePrim(vector3(-1,0,0),1200);
-    m_Primitive[m_Primitives]->GetMaterial()->SetReflection(0);
-    m_Primitive[m_Primitives]->GetMaterial()->SetDiffuse(1);
-    m_Primitive[m_Primitives]->GetMaterial()->SetRefraction(0);
-    m_Primitive[m_Primitives]->GetMaterial()->SetColor(Color(1,1,1));
-    m_Primitive[m_Primitives]->GetMaterial()->Setabsorb(Color(0.1,0.1,0.01));
-    m_Primitive[m_Primitives]->SetText("T_f.jpg");
-    m_Primitives++;
-    
-    m_Primitive[m_Primitives] =new Sphere(vector3(650,130,600),130);
-    m_Primitive[m_Primitives]->GetMaterial()->SetReflection(0);
-    m_Primitive[m_Primitives]->GetMaterial()->SetDiffuse(1);
-    m_Primitive[m_Primitives]->GetMaterial()->SetRefraction(0);
-    m_Primitive[m_Primitives]->GetMaterial()->SetRefrIndex(1.7);
-    m_Primitive[m_Primitives]->GetMaterial()->SetColor(Color(1,0.8,0.6));
-    m_Primitive[m_Primitives]->GetMaterial()->Setabsorb(Color(0.03,0.03,0.01));
-    m_Primitives++;
-    
-    m_Primitive[m_Primitives] =new Sphere(vector3(000,150,650),150);
-    m_Primitive[m_Primitives]->GetMaterial()->SetReflection(1);
-    m_Primitive[m_Primitives]->GetMaterial()->SetDiffuse(0);
-    m_Primitive[m_Primitives]->GetMaterial()->SetRefraction(0);
-    m_Primitive[m_Primitives]->GetMaterial()->SetRefrIndex(0);
-    m_Primitive[m_Primitives]->GetMaterial()->SetColor(Color(1,1,0.9));
-    m_Primitive[m_Primitives]->GetMaterial()->Setabsorb(Color(0.07,0.07,0.01));
-    m_Primitives++;
     Material mat;
     mat.SetDiffuse( 1 );
     mat.SetColor(Color(1,1,1));
     mat.SetReflection(0);
     mat.SetRefraction(0);
     
-    m_Primitive[m_Primitives++] = new Compobj("dragon.obj",400,vector3(300,300,1300),mat,"T_e.jpg");
-    mat.SetDiffuse( 0 );
-    mat.SetColor(Color(0.1,0.5,1));
-    mat.SetReflection(0);
-    mat.SetRefraction(1);
-    mat.Setabsorb(Color(0.02,0.012,0.04));
-    mat.SetRefrIndex(1.1);
-    m_Primitive[m_Primitives++] = new Compobj("rabbit.obj",1000,vector3(500,-20,000),mat);
+    m_Primitive[m_Primitives++] = new Compobj("cube3.obj",1200,vector3(-200,-300,-600),mat,"T_f.jpg");
     mat.SetDiffuse( 1 );
-    mat.SetColor(Color(0.1,0.5,1));
+    mat.SetColor(Color(1,1,1));
     mat.SetReflection(0);
     mat.SetRefraction(0);
-    mat.Setabsorb(Color(0.015,0.015,0.02));
-    mat.SetRefrIndex(1.1);
-    m_Primitive[m_Primitives++] = new Compobj("kitten.obj",2.5,vector3(150,010,000),mat);
+    mat.SetRefrIndex(1);
+    //mat.SetDiffuse( 0 );
+    mat.Setabsorb(Color(0,0.0,0.0));
+    m_Primitive[m_Primitives++] = new Compobj("plane.obj",1400,vector3(50,-200,600),mat);
     
+    
+    mat.SetDiffuse( 0 );
+    mat.SetColor(Color(1,1,1));
+    mat.SetReflection(0);
+    mat.SetRefraction(1);
+    mat.SetRefrIndex(1.7);
+    mat.Setabsorb(Color(0.01,0.01,0.01));
+    m_Primitive[m_Primitives++] = new Compobj("dragon.obj",350,vector3(400,100,200),mat);
     
     // build the regular gird
     FindLight();

@@ -23,10 +23,10 @@ int main() {
     cvShowImage(windowTitle, image);
     Scene _scene;_scene.InitScene();
     Raytrace m_raytrace(_scene, IMAGE_WIDTH , IMAGE_HEIGHT);
-    m_raytrace.SetView(vector3(IMAGE_WIDTH/2,IMAGE_HEIGHT/2,-700));
-    int t=clock();
+    m_raytrace.SetView(vector3(IMAGE_WIDTH/2,IMAGE_HEIGHT/2,-500));
+    int t=time_t(NULL);
     m_raytrace.render(image,windowTitle);
-    cout<<(clock()-t)/CLOCKS_PER_SEC<<endl;
+    cout<<(time_t(NULL)-t)<<endl;
     cvShowImage(windowTitle, image);
     cvSaveImage(fileName, image);
     cvWaitKey(0);

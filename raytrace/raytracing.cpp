@@ -126,8 +126,8 @@ Color Raytrace::Raytracing(Ray &_ray,int depth,double ind,double &dist,int ttt,b
             dist/=ts;
             dist+=event.dist;
         }
-        //vector3 pixtemp=GetPhong(event,_ray,depth,ind,tempt,ttt,refra);
-        //if (pixtemp.Length()>pix.Length()) pix=pixtemp;
+        vector3 pixtemp=GetPhong(event,_ray,depth,ind,tempt,ttt,refra)*0.1;
+        if (pixtemp.Length()>pix.Length()) pix=pixtemp;
         pix=pix+ event.obj->GetColor(event.P.x,event.P.y,event.P.z)*s_light*event.obj->GetMaterial()->GetDiffuse();
         //if (ttt)pix=pix*(1.0/event.obj->GetColor(event.P.x,event.P.y,event.P.z).Maxis());
         //if (pix_ttt.Length()>pix.Length()) pix=pix_ttt;
